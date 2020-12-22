@@ -2,30 +2,37 @@ class SkyBox
 {
 public:
 
-	//Керування зміщення текстурних координат
+	//РљРµСЂСѓРІР°РЅРЅСЏ Р·РјС–С‰РµРЅРЅСЏ С‚РµРєСЃС‚СѓСЂРЅРёС… РєРѕРѕСЂРґРёРЅР°С‚
 	float TXtx;
 	float TYtx;
 
-	//Зжимаємо текстуру або ростягування
+	//Р—Р¶РёРјР°С”РјРѕ С‚РµРєСЃС‚СѓСЂСѓ Р°Р±Рѕ СЂРѕСЃС‚СЏРіСѓРІР°РЅРЅСЏ
 	float TXsca;
 	float TYsca;
 
-	//Координатне стиснення і розтягування сфери
+	//РљРѕРѕСЂРґРёРЅР°С‚РЅРµ СЃС‚РёСЃРЅРµРЅРЅСЏ С– СЂРѕР·С‚СЏРіСѓРІР°РЅРЅСЏ СЃС„РµСЂРё
 	float MeshSX;
 	float MeshSY;
 	float MeshSZ;
 
-	//Зміщеня об'єкта
+	//Р—РјС–С‰РµРЅСЏ РѕР±'С”РєС‚Р°
 	float MeshTX;
 	float MeshTY;
 	float MeshTZ;
+
+
+	//Р РѕР·РјС–СЂ РєСѓР±Р°
+	float CubSize;
+	//РўРёРї С‚РµРєСЃС‚СѓСЂРє
+	short TextureCubeType;
+
 
 
 	//pi
 	float PI;
 
 
-	//Текстура
+	//РўРµРєСЃС‚СѓСЂР°
 	GLuint Textura;
 
 
@@ -51,14 +58,22 @@ public:
 			MeshTX = 0;
 			MeshTY = 0;
 			MeshTZ = 0;
+
+			CubSize = 500;
+
+
+			TextureCubeType = 0;
 	}
 
 
 
-	void draw()
+	void drawSfera()
 	{
+
+
+	//return;
 		//TXtx  = sin(TempI*15);
-//================================/ Темчасові змінні /=========
+//================================/ РўРµРјС‡Р°СЃРѕРІС– Р·РјС–РЅРЅС– /=========
 	float c = 0;
 	float Pi2 = PI*2;
 	c = 0;
@@ -73,30 +88,31 @@ public:
 	int t;
 	r = 0;
 	t = 0;
-//================================/ Темчасові змінні /=========
+//================================/ РўРµРјС‡Р°СЃРѕРІС– Р·РјС–РЅРЅС– /=========
 
 
-//glRotatef(90,0,1,0);
-	glBindTexture(GL_TEXTURE_2D,Textura);
+
+glBindTexture(GL_TEXTURE_2D,Textura);
+glColor3f(1,1,1);
 glBegin(GL_TRIANGLES);
 
-//Цикл генерацій копій копій полос
+//Р¦РёРєР» РіРµРЅРµСЂР°С†С–Р№ РєРѕРїС–Р№ РєРѕРїС–Р№ РїРѕР»РѕСЃ
 while(c2<(Pi2/2)/2)
 {
-	//Зміщення полосочок
-	float ZM = sin(c2); //В кінці забрати двійку
-	//Зтягування полосочок в сферу
+	//Р—РјС–С‰РµРЅРЅСЏ РїРѕР»РѕСЃРѕС‡РѕРє
+	float ZM = sin(c2); //Р’ РєС–РЅС†С– Р·Р°Р±СЂР°С‚Рё РґРІС–Р№РєСѓ
+	//Р—С‚СЏРіСѓРІР°РЅРЅСЏ РїРѕР»РѕСЃРѕС‡РѕРє РІ СЃС„РµСЂСѓ
 	Radius1 = cos(c2)  ;
 	Radius2 = cos(c2 + 0.1);
 	
-	//Розраховую правильну ширину полосочок
+	//Р РѕР·СЂР°С…РѕРІСѓСЋ РїСЂР°РІРёР»СЊРЅСѓ С€РёСЂРёРЅСѓ РїРѕР»РѕСЃРѕС‡РѕРє
 	float modWid = ((0.1/2) * cos(c2))*1.001;
 
 	c = 0;
-	//Створення полос
+	//РЎС‚РІРѕСЂРµРЅРЅСЏ РїРѕР»РѕСЃ
 	while(c<Pi2)
 	{
-			glColor3f(1,1,1);
+			
 			glTexCoord2d(TXsca * (TXtx +	-(c/dilt)),TYtx +		((c2/dilt2	+0.5)*TYsca)		);		 glVertex3f(MeshTX+(MeshSX * (sin(c)*Radius1))	,MeshTY+(MeshSY * (-modWid	+ ZM))	,MeshTZ+(MeshSZ * (cos(c)*Radius1)));  //1
 	c+=0.1; glTexCoord2d(TXsca * (TXtx +	-(c/dilt)),TYtx +		((c2/dilt2	+0.5)*TYsca)		);		 glVertex3f(MeshTX+(MeshSX * (sin(c)*Radius1))	,MeshTY+(MeshSY * (-modWid	+ ZM))	,MeshTZ+(MeshSZ * (cos(c)*Radius1))); //2
 	c-=0.1; glTexCoord2d(TXsca * (TXtx +	-(c/dilt)),TYtx +		(((c2+0.1)/dilt2 +0.5)*TYsca));			 glVertex3f(MeshTX+(MeshSX * sin(c)*Radius2	)	,MeshTY+(MeshSY * (modWid	+ ZM))	,MeshTZ+(MeshSZ * (cos(c)*Radius2)));  //3 
@@ -108,12 +124,144 @@ while(c2<(Pi2/2)/2)
 c2+=0.1;
 }
 
+
+
 glEnd();
+}
 
-//
 
+	void draw()
+	{
+		double FixTY = 1.0f/3.0f;
+
+
+
+		glBindTexture(GL_TEXTURE_2D,Textura);
+		glColor3f(1,1,1);
+
+	if(TextureCubeType == 0)
+		{
+		drawSfera();
+		}
+	else
+	{
+		glBegin(GL_QUADS);
+
+		//1
+		glTexCoord2d(0.25,FixTY); glVertex3d(-CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0,FixTY); glVertex3d(-CubSize,-CubSize,CubSize);
+		glTexCoord2d(0,FixTY*2); glVertex3d(-CubSize,CubSize,CubSize);
+		glTexCoord2d(0.25,FixTY*2); glVertex3d(-CubSize,CubSize,-CubSize);
+
+		//2
+		glTexCoord2d(0.25,FixTY); glVertex3d(-CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0.5,FixTY); glVertex3d(CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0.5,FixTY*2); glVertex3d(CubSize,CubSize,-CubSize);
+		glTexCoord2d(0.25,FixTY*2); glVertex3d(-CubSize,CubSize,-CubSize);
+
+		//3
+		glTexCoord2d(0.50,FixTY); glVertex3d(CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0.75,FixTY); glVertex3d(CubSize,-CubSize,CubSize);
+		glTexCoord2d(0.75,FixTY*2); glVertex3d(CubSize,CubSize,CubSize);
+		glTexCoord2d(0.50,FixTY*2); glVertex3d(CubSize,CubSize,-CubSize);
+
+		//4
+		glTexCoord2d(1,FixTY); glVertex3d(-CubSize,-CubSize,CubSize);
+		glTexCoord2d(0.75,FixTY); glVertex3d(CubSize,-CubSize,CubSize);
+		glTexCoord2d(0.75,FixTY*2); glVertex3d(CubSize,CubSize,CubSize);
+		glTexCoord2d(1,FixTY*2); glVertex3d(-CubSize,CubSize,CubSize);
+		
+		if(TextureCubeType == 1)
+		{
+
+		
+
+		//5
+		glTexCoord2d(0.25,FixTY*2); glVertex3d(-CubSize,CubSize,-CubSize);
+		glTexCoord2d(0.5,FixTY*2); glVertex3d(CubSize,CubSize,-CubSize);
+		glTexCoord2d(0.5,1); glVertex3d(CubSize,CubSize,CubSize);
+		glTexCoord2d(0.25,1); glVertex3d(-CubSize,CubSize,CubSize);
+
+
+
+
+		//6
+		glTexCoord2d(0.25,FixTY); glVertex3d(-CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0.5,FixTY);  glVertex3d(CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0.5,0);			 glVertex3d(CubSize,-CubSize,CubSize);
+		glTexCoord2d(0.25,0);			 glVertex3d(-CubSize,-CubSize,CubSize);
+		}
+		else
+		{
+		if(TextureCubeType == 2)
+		{
+
+	
+		//5
+		glTexCoord2d(0.5,1); glVertex3d(-CubSize,CubSize,-CubSize);
+		glTexCoord2d(0.5,FixTY*2); glVertex3d(CubSize,CubSize,-CubSize);
+		glTexCoord2d(0.75,FixTY*2); glVertex3d(CubSize,CubSize,CubSize);
+		glTexCoord2d(0.75,1); glVertex3d(-CubSize,CubSize,CubSize);
+
+
+
+
+
+		//6
+		glTexCoord2d(0.5,0); glVertex3d(-CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0.5,FixTY);  glVertex3d(CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0.75,FixTY);			 glVertex3d(CubSize,-CubSize,CubSize);
+		glTexCoord2d(0.75,0);			 glVertex3d(-CubSize,-CubSize,CubSize);
+		}
+else
+		if(TextureCubeType == 3)
+		{
+
+
+		//5
+		glTexCoord2d(1,1); glVertex3d(-CubSize,CubSize,-CubSize);
+		glTexCoord2d(0.75,1); glVertex3d(CubSize,CubSize,-CubSize);
+		glTexCoord2d(0.75,FixTY*2); glVertex3d(CubSize,CubSize,CubSize);
+		glTexCoord2d(1,FixTY*2); glVertex3d(-CubSize,CubSize,CubSize);
+
+
+
+
+
+		//6
+		glTexCoord2d(	1,			0	); glVertex3d(-CubSize,-CubSize,-CubSize);
+		glTexCoord2d(	0.75,		0		);  glVertex3d(CubSize,-CubSize,-CubSize);
+		glTexCoord2d(	0.75,		FixTY		);			 glVertex3d(CubSize,-CubSize,CubSize);
+		glTexCoord2d(	1,			FixTY	);			 glVertex3d(-CubSize,-CubSize,CubSize);
+		}
+		else
+		if(TextureCubeType == 4)
+		{
+
+		
+
+		//5
+		glTexCoord2d(0.25,(FixTY*2)); glVertex3d(-CubSize,CubSize,-CubSize);
+		glTexCoord2d(0.25,1); glVertex3d(CubSize,CubSize,-CubSize);
+		glTexCoord2d(0,1); glVertex3d(CubSize,CubSize,CubSize);
+		glTexCoord2d(0,(FixTY*2)); glVertex3d(-CubSize,CubSize,CubSize);
+
+
+
+
+
+		//6
+		glTexCoord2d(0.25,FixTY); glVertex3d(-CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0.25,0);  glVertex3d(CubSize,-CubSize,-CubSize);
+		glTexCoord2d(0,0);			 glVertex3d(CubSize,-CubSize,CubSize);
+		glTexCoord2d(0,FixTY);			 glVertex3d(-CubSize,-CubSize,CubSize);
+		}
+		
+
+		}
+		glEnd();
+		}
 	}
-
 
 	void TexturaUS(GLuint IDadresTexture)
 	{
